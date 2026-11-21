@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulasi Analisis Arus Cabang (Dual Parallel Switches)</title>
+    <title>Simulasi Analisis Arus Cabang (KVL, KCL & Aturan Cramer)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <!-- MathJax Config -->
     <script>
@@ -59,7 +57,7 @@
             <div>
                 <span class="bg-indigo-500 text-xs font-semibold px-2.5 py-1 rounded text-indigo-100 uppercase tracking-wider">Simulasi Rangkaian DC</span>
                 <h1 class="text-2xl sm:text-3xl font-bold mt-1">Metode Analisis Arus Cabang</h1>
-                <p class="text-indigo-200 text-sm mt-0.5">Studi Rangkaian 2 Loop & Dual Saklar Paralel (S1 & S2)</p>
+                <p class="text-indigo-200 text-sm mt-0.5">Studi Rangkaian 2 Loop & Dual Saklar Paralel (Hukum Kirchhoff KVL/KCL & Aturan Cramer)</p>
             </div>
             <div class="flex items-center gap-3">
                 <span class="text-xs bg-indigo-700/80 px-3 py-2 rounded-lg border border-indigo-400/30">
@@ -178,14 +176,14 @@
                 </button>
             </div>
 
-            <!-- Center/Right Column: Visual Diagram & Results -->
+            <!-- Center/Right Column: Visual Circuit Simulation & Result Cards -->
             <div class="lg:col-span-8 space-y-6">
 
                 <!-- Interactive SVG Circuit Diagram dengan 2 Saklar Paralel -->
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-                            <i class="fa-solid fa-diagram-project text-indigo-600"></i> Skema Rangkaian (Dual Switch S1 & S2)
+                            <i class="fa-solid fa-diagram-project text-indigo-600"></i> Skema Rangkaian Simulasi (Dual Switch S1 & S2)
                         </h2>
                         <span class="text-xs text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Saklar Paralel Active
@@ -292,8 +290,8 @@
                     </div>
                 </div>
 
-                <!-- Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <!-- Cards Hasil Arus & Metrik Simpul -->
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                     <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl relative overflow-hidden">
                         <div class="text-xs font-semibold text-blue-600 uppercase tracking-wide">Arus Cabang 1 ($I_1$)</div>
                         <div class="text-2xl font-extrabold text-blue-900 mt-1 font-mono" id="cardI1">1.364 A</div>
@@ -317,43 +315,12 @@
                             <i class="fa-solid fa-arrow-down"></i> $I_3 = I_1 + I_2$
                         </div>
                     </div>
-                </div>
 
-                <!-- PANEL MULTI-GRAFIK -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b pb-3">
-                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-chart-line text-indigo-600"></i> Panel Analisis Grafik Rangkaian
-                        </h3>
-                        
-                        <!-- Tab Selector Grafik -->
-                        <div class="flex bg-slate-100 p-1 rounded-lg gap-1 text-xs font-semibold w-full sm:w-auto overflow-x-auto">
-                            <button onclick="switchTab('bar')" id="tab-bar" class="px-3 py-1.5 rounded-md bg-white shadow-sm text-indigo-600 transition">1. Perbandingan Arus</button>
-                            <button onclick="switchTab('line')" id="tab-line" class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition">2. Karakteristik V-I</button>
-                            <button onclick="switchTab('transient')" id="tab-transient" class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition">3. Respon Saklar (Waktu)</button>
-                            <button onclick="switchTab('pie')" id="tab-pie" class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition">4. Distribusi Daya</button>
-                        </div>
-                    </div>
-
-                    <!-- Canvas Container Dynamic -->
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                        <div class="md:col-span-8 h-64">
-                            <canvas id="mainChart"></canvas>
-                        </div>
-
-                        <!-- Panel Keterangan Metrik Samping -->
-                        <div class="md:col-span-4 space-y-3 bg-slate-50 p-4 rounded-lg border border-slate-200 text-xs">
-                            <h4 class="font-bold text-slate-800 border-b pb-1.5 flex items-center gap-1.5" id="graphTitle">
-                                <i class="fa-solid fa-circle-info text-indigo-500"></i> Keterangan Grafik
-                            </h4>
-                            <p class="text-slate-600 leading-relaxed" id="graphDesc">
-                                Menampilkan perbandingan besar arus listrik ($I_1, I_2, I_3$) secara langsung pada kondisi parameter saat ini.
-                            </p>
-                            <div class="pt-2 border-t border-slate-200 space-y-1 font-mono">
-                                <div class="flex justify-between"><span class="text-slate-500">Tegangan Node A ($V_A$):</span><span class="font-bold text-slate-900" id="valVa">6.55 V</span></div>
-                                <div class="flex justify-between"><span class="text-slate-500">Daya R3 ($P_{R3}$):</span><span class="font-bold text-slate-900" id="valPr3">7.14 W</span></div>
-                                <div class="flex justify-between"><span class="text-slate-500">Total Daya ($P_{\text{total}}$):</span><span class="font-bold text-slate-900" id="valPtotal">14.73 W</span></div>
-                            </div>
+                    <div class="bg-slate-100 border border-slate-300 p-4 rounded-xl relative overflow-hidden">
+                        <div class="text-xs font-semibold text-slate-600 uppercase tracking-wide">Tegangan Node A ($V_A$)</div>
+                        <div class="text-2xl font-extrabold text-slate-900 mt-1 font-mono" id="valVa">6.55 V</div>
+                        <div class="text-xs text-slate-600 mt-1 font-mono">
+                            Daya Total: <span class="font-bold" id="valPtotal">14.73 W</span>
                         </div>
                     </div>
                 </div>
@@ -361,7 +328,70 @@
             </div>
         </div>
 
-        <!-- Section 5: Verification Table -->
+        <!-- Section: Perhitungan Hukum Kirchhoff (KVL & KCL) dan Aturan Cramer -->
+        <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-6">
+            <div>
+                <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2 border-b pb-2">
+                    <i class="fa-solid fa-square-root-variable text-indigo-600"></i> Perhitungan Arus Cabang: Hukum Kirchhoff (KVL & KCL) serta Aturan Cramer
+                </h2>
+                <p class="text-xs text-slate-500 mt-1">Penurunan persamaan Hukum Kirchhoff dan penyelesaian matriks Aturan Cramer secara langsung sesuai nilai parameter aktif.</p>
+            </div>
+
+            <!-- 2 Kolom Teori & Substitusi Angka Langsung -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                <!-- Kolom 1: Perhitungan KVL & KCL -->
+                <div class="space-y-3 bg-slate-50 p-5 rounded-xl border border-slate-200">
+                    <h3 class="font-bold text-indigo-900 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-book text-indigo-600"></i> 1. Perhitungan Hukum Kirchhoff (KCL & KVL)
+                    </h3>
+                    <div class="bg-white p-3.5 rounded-lg border border-slate-200 text-xs space-y-1.5">
+                        <p>• <b>Hukum Arus Kirchhoff (KCL di Node A):</b><br>
+                        $$\sum I_{\text{masuk}} = \sum I_{\text{keluar}} \implies I_3 = I_1 + I_2$$</p>
+                        <p>• <b>Hukum Tegangan Kirchhoff (KVL Loop 1):</b><br>
+                        $$V_1 - I_1 R_1 - I_3 R_3 = 0 \implies (R_1 + R_3)I_1 + R_3 I_2 = V_1$$</p>
+                        <p>• <b>Hukum Tegangan Kirchhoff (KVL Loop 2):</b><br>
+                        $$V_2 - I_2 R_2 - I_3 R_3 = 0 \implies R_3 I_1 + (R_2 + R_3)I_2 = V_2$$</p>
+                    </div>
+                    <div id="kvlLiveBox" class="bg-indigo-50/70 p-3.5 rounded-lg border border-indigo-200 text-xs space-y-1">
+                        <!-- Substitusi KVL & KCL Real-Time diisi lewat JS -->
+                    </div>
+                </div>
+
+                <!-- Kolom 2: Penyelesaian Matriks (Aturan Cramer) -->
+                <div class="space-y-3 bg-slate-50 p-5 rounded-xl border border-slate-200">
+                    <h3 class="font-bold text-indigo-900 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-table-cells text-indigo-600"></i> 2. Penyelesaian Matriks (Aturan Cramer)
+                    </h3>
+                    <div class="bg-white p-3.5 rounded-lg text-xs border border-slate-200 text-center space-y-2">
+                        <p class="text-left text-slate-600">Bentuk matriks $[A][X] = [B]$ dari persamaan SPLDV di samping:</p>
+                        $$\begin{bmatrix} R_1 + R_3 & R_3 \\ R_3 & R_2 + R_3 \end{bmatrix} \begin{bmatrix} I_1 \\ I_2 \end{bmatrix} = \begin{bmatrix} V_1 \\ V_2 \end{bmatrix}$$
+                        <p class="text-left text-slate-600">Rumus rasio determinan Aturan Cramer:</p>
+                        $$I_1 = \frac{\Delta_1}{\Delta}, \quad I_2 = \frac{\Delta_2}{\Delta}, \quad I_3 = I_1 + I_2$$
+                    </div>
+                    <div id="cramerMatrixLive" class="bg-indigo-50/70 p-3.5 rounded-lg border border-indigo-200 text-xs text-center">
+                        <!-- Matriks Angka Real-Time diisi lewat JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Box Langkah Kalkulasi Determinan Cramer Real-Time -->
+            <div class="bg-indigo-50/70 p-5 rounded-xl border border-indigo-200 space-y-3">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <h4 class="font-bold text-indigo-950 text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-bolt text-amber-500"></i> Langkah Kalkulasi Determinan Aturan Cramer & KCL (Real-Time)
+                    </h4>
+                    <span id="cramerModeBadge" class="text-xs font-semibold bg-indigo-600 text-white px-2.5 py-1 rounded-full">
+                        Mode Aktif: 2 Loop Penuh (S1 ON & S2 ON)
+                    </span>
+                </div>
+
+                <div id="cramerLiveBox" class="grid grid-cols-1 md:grid-cols-4 gap-4 font-mono text-xs">
+                    <!-- Diisi otomatis lewat JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Verification Table -->
         <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b pb-3">
                 <div>
@@ -417,10 +447,8 @@
 
     <!-- JavaScript Logic -->
     <script>
-        let mainChart = null;
         let isS1On = true;
         let isS2On = true;
-        let activeTab = 'bar';
 
         document.addEventListener('DOMContentLoaded', function() {
             calculateCircuit();
@@ -477,11 +505,16 @@
             document.getElementById('svgR3Text').textContent = `R3 = ${R3}Ω`;
 
             let I1 = 0, I2 = 0, I3 = 0;
+            const cramerBox = document.getElementById('cramerLiveBox');
+            const cramerBadge = document.getElementById('cramerModeBadge');
+            const kvlLiveBox = document.getElementById('kvlLiveBox');
+            const cramerMatrixLive = document.getElementById('cramerMatrixLive');
+
+            const a1 = R1 + R3, b1 = R3, c1 = V1;
+            const a2 = R3, b2 = R2 + R3, c2 = V2;
 
             if (isS1On && isS2On) {
                 // Kedua Saklar TERHUBUNG (Kondisi 2-Loop Cramer)
-                const a1 = R1 + R3, b1 = R3, c1 = V1;
-                const a2 = R3, b2 = R2 + R3, c2 = V2;
                 const D = (a1 * b2) - (b1 * a2);
                 const D1 = (c1 * b2) - (b1 * c2);
                 const D2 = (a1 * c2) - (c1 * a2);
@@ -490,25 +523,104 @@
                     I2 = D2 / D;
                     I3 = I1 + I2;
                 }
+
+                kvlLiveBox.innerHTML = `
+                    <div class="font-bold text-indigo-950">Substitusi Angka ke Persamaan KVL & KCL:</div>
+                    <div>• <b>Persamaan Loop 1:</b> $(${R1} + ${R3})I_1 + ${R3}I_2 = ${V1} \\implies \\mathbf{${a1}I_1 + ${b1}I_2 = ${c1}}$</div>
+                    <div>• <b>Persamaan Loop 2:</b> $${R3}I_1 + (${R2} + ${R3})I_2 = ${V2} \\implies \\mathbf{${a2}I_1 + ${b2}I_2 = ${c2}}$</div>
+                    <div>• <b>Bukti KCL (Node A):</b> $I_3 = ${I1.toFixed(4)} + (${I2.toFixed(4)}) = \\mathbf{${I3.toFixed(4)}\\text{ A}}$</div>
+                `;
+
+                cramerMatrixLive.innerHTML = `
+                    <div class="font-bold text-indigo-950 text-left mb-1">Substitusi Angka Matriks $[A][X] = [B]$:</div>
+                    $$\\begin{bmatrix} ${a1} & ${b1} \\\\ ${a2} & ${b2} \\end{bmatrix} \\begin{bmatrix} I_1 \\\\ I_2 \\end{bmatrix} = \\begin{bmatrix} ${c1} \\\\ ${c2} \\end{bmatrix}$$
+                `;
+
+                cramerBadge.innerText = "Mode Aktif: 2 Loop Penuh (Aturan Cramer)";
+                cramerBadge.className = "text-xs font-semibold bg-indigo-600 text-white px-2.5 py-1 rounded-full";
+                cramerBox.innerHTML = `
+                    <div class="bg-white p-3.5 rounded-lg border border-indigo-100 space-y-1">
+                        <div class="font-bold text-slate-700 font-sans">1. Determinan Utama ($\\Delta$)</div>
+                        <div class="text-slate-600">$\\Delta = (${a1} \\times ${b2}) - (${b1} \\times ${a2})$</div>
+                        <div class="text-slate-600">$\\Delta = ${a1 * b2} - ${b1 * a2}$</div>
+                        <div class="text-indigo-700 font-bold text-sm pt-1">$\\Delta = ${D}$</div>
+                    </div>
+                    <div class="bg-white p-3.5 rounded-lg border border-blue-100 space-y-1">
+                        <div class="font-bold text-blue-800 font-sans">2. Determinan $\\Delta_1$ & Arus $I_1$</div>
+                        <div class="text-slate-600">$\\Delta_1 = (${c1} \\times ${b2}) - (${b1} \\times ${c2}) = ${D1}$</div>
+                        <div class="text-blue-700 font-bold text-sm pt-1">$I_1 = \\frac{${D1}}{${D}} = ${I1.toFixed(4)}\\text{ A}$</div>
+                    </div>
+                    <div class="bg-white p-3.5 rounded-lg border border-emerald-100 space-y-1">
+                        <div class="font-bold text-emerald-800 font-sans">3. Determinan $\\Delta_2$ & Arus $I_2$</div>
+                        <div class="text-slate-600">$\\Delta_2 = (${a1} \\times ${c2}) - (${c1} \\times ${a2}) = ${D2}$</div>
+                        <div class="text-emerald-700 font-bold text-sm pt-1">$I_2 = \\frac{${D2}}{${D}} = ${I2.toFixed(4)}\\text{ A}$</div>
+                    </div>
+                    <div class="bg-white p-3.5 rounded-lg border border-purple-100 space-y-1">
+                        <div class="font-bold text-purple-800 font-sans">4. Arus Tengah $I_3$ (KCL)</div>
+                        <div class="text-slate-600">$I_3 = I_1 + I_2$</div>
+                        <div class="text-slate-600">$I_3 = ${I1.toFixed(4)} + (${I2.toFixed(4)})$</div>
+                        <div class="text-purple-700 font-bold text-sm pt-1">$I_3 = ${I3.toFixed(4)}\\text{ A}$</div>
+                    </div>
+                `;
             } else if (isS1On && !isS2On) {
-                // Hanya S1 ON (Loop Kiri Sahaja)
+                // Hanya S1 ON (Loop Kiri Saja)
                 I1 = V1 / (R1 + R3);
                 I2 = 0;
                 I3 = I1;
+
+                kvlLiveBox.innerHTML = `
+                    <div class="font-bold text-blue-900">Cabang Kanan Terbuka ($I_2 = 0\\text{ A}$) — Loop Tunggal Kiri:</div>
+                    <div>• <b>KVL Loop 1:</b> $V_1 - I_1(R_1 + R_3) = 0 \\implies ${V1} - I_1(${R1} + ${R3}) = 0$</div>
+                    <div>• <b>KCL Node A:</b> $I_3 = I_1 + 0 = \\mathbf{${I3.toFixed(4)}\\text{ A}}$</div>
+                `;
+                cramerMatrixLive.innerHTML = `<div class="text-slate-600 py-4">Matriks 2x2 tereduksi menjadi 1 loop tunggal karena Saklar S2 terbuka (OFF).</div>`;
+
+                cramerBadge.innerText = "Mode Aktif: 1 Loop Kiri (S1 ON, S2 OFF)";
+                cramerBadge.className = "text-xs font-semibold bg-blue-600 text-white px-2.5 py-1 rounded-full";
+                cramerBox.innerHTML = `
+                    <div class="bg-white p-3.5 rounded-lg border border-blue-100 md:col-span-4 space-y-1">
+                        <div class="font-bold text-blue-800 font-sans">Perhitungan Arus Loop 1 ($I_2 = 0\\text{ A}$):</div>
+                        <div class="text-slate-700">$I_1 = I_3 = \\frac{V_1}{R_1 + R_3} = \\frac{${V1}}{${R1} + ${R3}} = \\frac{${V1}}{${R1 + R3}} = \\mathbf{${I1.toFixed(4)}\\text{ A}}$</div>
+                    </div>
+                `;
             } else if (!isS1On && isS2On) {
-                // Hanya S2 ON (Loop Kanan Sahaja)
+                // Hanya S2 ON (Loop Kanan Saja)
                 I1 = 0;
                 I2 = V2 / (R2 + R3);
                 I3 = I2;
+
+                kvlLiveBox.innerHTML = `
+                    <div class="font-bold text-emerald-900">Cabang Kiri Terbuka ($I_1 = 0\\text{ A}$) — Loop Tunggal Kanan:</div>
+                    <div>• <b>KVL Loop 2:</b> $V_2 - I_2(R_2 + R_3) = 0 \\implies ${V2} - I_2(${R2} + ${R3}) = 0$</div>
+                    <div>• <b>KCL Node A:</b> $I_3 = 0 + I_2 = \\mathbf{${I3.toFixed(4)}\\text{ A}}$</div>
+                `;
+                cramerMatrixLive.innerHTML = `<div class="text-slate-600 py-4">Matriks 2x2 tereduksi menjadi 1 loop tunggal karena Saklar S1 terbuka (OFF).</div>`;
+
+                cramerBadge.innerText = "Mode Aktif: 1 Loop Kanan (S1 OFF, S2 ON)";
+                cramerBadge.className = "text-xs font-semibold bg-emerald-600 text-white px-2.5 py-1 rounded-full";
+                cramerBox.innerHTML = `
+                    <div class="bg-white p-3.5 rounded-lg border border-emerald-100 md:col-span-4 space-y-1">
+                        <div class="font-bold text-emerald-800 font-sans">Perhitungan Arus Loop 2 ($I_1 = 0\\text{ A}$):</div>
+                        <div class="text-slate-700">$I_2 = I_3 = \\frac{V_2}{R_2 + R_3} = \\frac{${V2}}{${R2} + ${R3}} = \\frac{${V2}}{${R2 + R3}} = \\mathbf{${I2.toFixed(4)}\\text{ A}}$</div>
+                    </div>
+                `;
             } else {
                 // Kedua Saklar OFF
                 I1 = 0; I2 = 0; I3 = 0;
+
+                kvlLiveBox.innerHTML = `<div class="text-rose-700 font-semibold">Semua saklar terbuka (OFF). Tidak ada jalur tertutup sehingga $I_1 = 0, I_2 = 0, I_3 = 0$.</div>`;
+                cramerMatrixLive.innerHTML = `<div class="text-slate-500 py-4">Tidak ada arus yang mengalir (Open Circuit).</div>`;
+
+                cramerBadge.innerText = "Mode Aktif: Rangkaian Terputus (S1 OFF & S2 OFF)";
+                cramerBadge.className = "text-xs font-semibold bg-rose-600 text-white px-2.5 py-1 rounded-full";
+                cramerBox.innerHTML = `
+                    <div class="bg-white p-3.5 rounded-lg border border-rose-100 md:col-span-4 text-rose-700 font-sans font-semibold">
+                        Kedua saklar dalam posisi terbuka (OFF), sehingga tidak ada loop tertutup dan seluruh arus cabang bernilai $0\\text{ A}$.
+                    </div>
+                `;
             }
 
             const Va = I3 * R3;
-            const Pr1 = I1 * I1 * R1;
-            const Pr2 = I2 * I2 * R2;
-            const Pr3 = I3 * I3 * R3;
             const Ptotal = (V1 * I1) + (V2 * I2);
 
             document.getElementById('cardI1').innerText = I1.toFixed(3) + ' A';
@@ -520,7 +632,6 @@
             updateDirectionStatus('dirI3', 'svgI3Text', I3, 'Atas ke Bawah', (isS1On || isS2On));
 
             document.getElementById('valVa').innerText = Va.toFixed(2) + ' V';
-            document.getElementById('valPr3').innerText = Pr3.toFixed(2) + ' W';
             document.getElementById('valPtotal').innerText = Ptotal.toFixed(2) + ' W';
 
             document.getElementById('calcI1').innerText = I1.toFixed(4) + ' A';
@@ -530,9 +641,7 @@
             document.getElementById('calcI3').innerText = I3.toFixed(4) + ' A';
             document.getElementById('simI3').innerText = I3.toFixed(4) + ' A';
 
-            renderChart(I1, I2, I3, V1, R1, R2, R3, Pr1, Pr2, Pr3);
-
-            // Flow Animations
+            // Flow Animations pada Skema Rangkaian
             updateFlowAnimation('flow1', I1, isS1On);
             updateFlowAnimation('flow2', I2, isS2On);
             updateFlowAnimation('flow3', I3, (isS1On || isS2On));
@@ -555,100 +664,6 @@
             } else {
                 el.innerHTML = `<i class="fa-solid fa-check text-emerald-500"></i> Searah Asumsi (${normalDir})`;
                 if(svgEl) svgEl.textContent = `${svgId.replace('svg','').replace('Text','')}`;
-            }
-        }
-
-        function switchTab(tabType) {
-            activeTab = tabType;
-            ['bar', 'line', 'transient', 'pie'].forEach(t => {
-                const btn = document.getElementById(`tab-${t}`);
-                if (t === tabType) {
-                    btn.className = "px-3 py-1.5 rounded-md bg-white shadow-sm text-indigo-600 transition";
-                } else {
-                    btn.className = "px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition";
-                }
-            });
-            calculateCircuit();
-        }
-
-        function renderChart(I1, I2, I3, V1, R1, R2, R3, Pr1, Pr2, Pr3) {
-            const ctx = document.getElementById('mainChart').getContext('2d');
-            if (mainChart) mainChart.destroy();
-
-            const desc = document.getElementById('graphDesc');
-
-            if (activeTab === 'bar') {
-                desc.innerText = "Menampilkan perbandingan besar/magnitudo arus cabang (|I1|, |I2|, |I3|). Terlihat proporsi penggabungan arus I1 dan I2 di Node A menjadi I3.";
-                mainChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['I1 (Cabang 1)', 'I2 (Cabang 2)', 'I3 (Tengah)'],
-                        datasets: [{
-                            data: [Math.abs(I1).toFixed(3), Math.abs(I2).toFixed(3), Math.abs(I3).toFixed(3)],
-                            backgroundColor: ['rgba(37, 99, 235, 0.7)', 'rgba(5, 150, 105, 0.7)', 'rgba(124, 58, 237, 0.7)'],
-                            borderColor: ['#2563eb', '#059669', '#7c3aed'],
-                            borderWidth: 2, borderRadius: 6
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'Arus (A)' } } } }
-                });
-
-            } else if (activeTab === 'line') {
-                desc.innerText = "Grafik Kurva Karakteristik Linear V-I (Hukum Ohm). Menunjukkan hubungan linier berbanding lurus antara kenaikan tegangan sumber V1 (0-48V) terhadap respons arus I1.";
-                let vSteps = [], i1Steps = [];
-                for (let v = 0; v <= 48; v += 6) {
-                    vSteps.push(v + 'V');
-                    let a1 = R1 + R3, b1 = R3, c1 = v;
-                    let a2 = R3, b2 = R2 + R3, c2 = parseFloat(document.getElementById('v2').value);
-                    let D = (a1 * b2) - (b1 * a2);
-                    let D1 = (c1 * b2) - (b1 * c2);
-                    i1Steps.push((isS1On && isS2On) ? (D !== 0 ? (D1 / D).toFixed(3) : 0) : (isS1On ? (v / (R1 + R3)).toFixed(3) : 0));
-                }
-                mainChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: vSteps,
-                        datasets: [{
-                            label: 'Respon Arus I1 (A)',
-                            data: i1Steps,
-                            borderColor: '#2563eb',
-                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                            fill: true, tension: 0.2, pointRadius: 4
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'Arus I1 (A)' } }, x: { title: { display: true, text: 'Variasi Tegangan V1' } } } }
-                });
-
-            } else if (activeTab === 'transient') {
-                desc.innerText = "Grafik Sinyal Waktu / Respon Transien Saklar S1. Menunjukkan kondisi arus instan saat Saklar S1 terhubung (ON) atau terputus (OFF).";
-                const val = isS1On ? Math.abs(I1) : 0;
-                mainChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: ['0s', '1s', '2s (Saklar)', '3s', '4s', '5s'],
-                        datasets: [{
-                            label: 'Sinyal Arus I1 (A)',
-                            data: [0, 0, val, val, val, val],
-                            borderColor: isS1On ? '#059669' : '#ef4444',
-                            borderWidth: 3, fill: false, stepped: true
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, title: { display: true, text: 'Arus (A)' } } } }
-                });
-
-            } else if (activeTab === 'pie') {
-                desc.innerText = "Diagram Lingkaran Pembagian Daya Listrik (Power Distribution). Membuktikan Hukum Kekekalan Energi pada resistor R1, R2, dan R3.";
-                mainChart = new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: ['Daya R1 (W)', 'Daya R2 (W)', 'Daya R3 (W)'],
-                        datasets: [{
-                            data: [Pr1.toFixed(2), Pr2.toFixed(2), Pr3.toFixed(2)],
-                            backgroundColor: ['#3b82f6', '#10b981', '#a855f7']
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false }
-                });
             }
         }
 
